@@ -1,8 +1,19 @@
 <script lang='ts'>
   import { goto } from '$app/navigation';
+  import TiVendorMicrosoft from 'svelte-icons/ti/TiVendorMicrosoft.svelte';
   import Button from '@components/button/Button.svelte';
 </script>
-Login page
 
+<Button on:click={()=>goto('/dashboard')} className='flex justify-center'>
+  <div>
+    <TiVendorMicrosoft />
+  </div>
+  Login
+</Button>
 
-<Button text='Home' on:click={()=>goto('/dashboard')} />
+<style>
+    div {
+        display: inline-flex;
+        height: 1.5rem;
+    }
+</style>
