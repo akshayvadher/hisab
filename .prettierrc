@@ -2,6 +2,8 @@
   "useTabs": false,
   "tabWidth": 2,
   "singleQuote": true,
+  "jsxSingleQuote": false,
+  "quoteProps": "consistent",
   "trailingComma": "all",
   "printWidth": 100,
   "plugins": [

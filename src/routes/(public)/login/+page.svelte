@@ -1,10 +1,16 @@
 <script lang='ts'>
-  import { goto } from '$app/navigation';
   import TiVendorMicrosoft from 'svelte-icons/ti/TiVendorMicrosoft.svelte';
   import Button from '@components/button/Button.svelte';
+  import { login } from '$lib/firebase/auth';
+  import { goto } from '$app/navigation';
+
+  async function doLogin() {
+    await login();
+    await goto('/dashboard');
+  }
 </script>
 
-<Button on:click={()=>goto('/dashboard')} className='flex justify-center'>
+<Button on:click={doLogin} className='inline-flex justify-center'>
   <div>
     <TiVendorMicrosoft />
   </div>
