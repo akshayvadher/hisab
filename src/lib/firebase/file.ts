@@ -7,7 +7,13 @@ export const uploadProfilePhoto = async (userId: string, photo: Blob) => {
   return uploadTask.ref.fullPath;
 };
 
+const map = new Map<string, string>();
 export const getProfilePhotoUrl = async (photoUrl: string) => {
+  if (map.has(photoUrl)) {
+    return map.get(photoUrl);
+  }
   const storageRef = ref(storage, photoUrl);
-  return await getDownloadURL(storageRef);
+  const url = await getDownloadURL(storageRef);
+  map.set(photoUrl, url);
+  return url;
 };

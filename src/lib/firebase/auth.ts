@@ -30,3 +30,7 @@ export async function login() {
 
   return saveUser(result, photoUrl);
 }
+
+export async function logout() {
+  await firebaseAuth.signOut();
+}
