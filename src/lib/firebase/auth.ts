@@ -2,7 +2,7 @@ import { OAuthCredential, OAuthProvider, signInWithPopup, type UserCredential } 
 import { firebaseAuth } from '$lib/firebase/firebase';
 import { lookupMsAzureProfilePhoto } from '$lib/firebase/azure';
 import { uploadProfilePhoto } from '$lib/firebase/file';
-import { saveUser } from '$lib/firebase/db/user';
+import { saveLoginResultUser } from '$lib/firebase/db/user';
 
 function getProvider() {
   const provider = new OAuthProvider('microsoft.com');
@@ -28,7 +28,7 @@ export async function login() {
 
   const photoUrl = await getPhoto(result);
 
-  return saveUser(result, photoUrl);
+  return saveLoginResultUser(result, photoUrl);
 }
 
 export async function logout() {

@@ -7,5 +7,6 @@
     <li><A to='/dashboard' text='Dashboard' /></li>
     <li><A to='/me' text='Me' /></li>
     <li><A to='/logout' text='Logout' /></li>
+    <li><A to='/fake' text='Fake' /></li>
   </ul>
 </nav>
