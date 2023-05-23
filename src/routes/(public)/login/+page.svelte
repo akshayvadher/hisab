@@ -7,8 +7,6 @@
   import { goto } from '$app/navigation';
   import { APP_TITLE } from '$lib/const';
   import { firebaseAuth } from '$lib/firebase/firebase';
-  import { getUser } from '$lib/firebase/db/user';
-  import { authStore } from '$lib/stores/auth';
 
   async function doLogin() {
     await login();
@@ -17,11 +15,6 @@
   onMount(async () => {
     onAuthStateChanged(firebaseAuth, async (result) => {
       if (result) {
-        const user = await getUser(result.uid);
-        $authStore = {
-          isAuthenticated: true,
-          user,
-        };
         await goto('/dashboard');
       }
     });

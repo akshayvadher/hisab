@@ -7,10 +7,16 @@
 </script>
 
 <svelte:head>
-  <title>{APP_TITLE} | Dashboard</title>
+  <title>{APP_TITLE} | Me</title>
 </svelte:head>
-Dashboard
 
-Welcome {user.name}
+Me
+
+<dl>
+  <dt>Name</dt>
+  <dd>{user.name}</dd>
+  <dt>Email</dt>
+  <dd>{user.email}</dd>
+</dl>
 
 <Avatar {user} />

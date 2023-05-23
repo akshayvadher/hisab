@@ -1,19 +1,31 @@
 <script lang='ts'>
-  import { authStore } from '$lib/stores/auth';
-  import { setAuthContext } from '$lib/context/auth';
   import { goto } from '$app/navigation';
+  import { onMount } from 'svelte';
+  import { onAuthStateChanged } from 'firebase/auth';
+  import { firebaseAuth } from '$lib/firebase/firebase';
+  import { getUser } from '$lib/firebase/db/user';
+  import { authStore } from '$lib/stores/auth';
 
-  let { isAuthenticated, user } = $authStore;
-  if (isAuthenticated && user) {
-    setAuthContext(user);
-  } else {
-    goto('/login');
-  }
-
+  let checkingAuth = true;
+  onMount(async () => {
+    onAuthStateChanged(firebaseAuth, async (result) => {
+      if (result) {
+        const user = await getUser(result.uid);
+        $authStore = { isAuthenticated: true, user };
+      } else {
+        await goto('/login');
+      }
+      checkingAuth = false;
+    });
+  });
 </script>
 
-{#if isAuthenticated}
-  <slot />
+{#if checkingAuth}
+  Checking Auth Info
 {:else}
-  Not authenticated
+  {#if $authStore.isAuthenticated}
+    <slot />
+  {:else}
+    Not authenticated
+  {/if}
 {/if}
