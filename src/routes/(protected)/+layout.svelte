@@ -8,9 +8,11 @@
   <title>{APP_TITLE}</title>
 </svelte:head>
 
-<div class='w-full h-screen p-2 bg-gray-700 text-white text-center'>
+<div class='w-full h-screen p-2'>
   <AuthProtector>
     <Nav />
-    <slot />
+    <main class='p-4 sm:ml-64'>
+      <slot />
+    </main>
   </AuthProtector>
 </div>

@@ -37,7 +37,7 @@
 </script>
 
 {#each users as user (user.authUid)}
-<div class='flex flex-col items-center justify-center p-2'>
+<div class='flex items-center p-5 gap-2'>
     <Avatar {user} />
     <p class='text-lg font-bold'>{user.name}</p>
     <p class='text-sm text-gray-500'>{user.email}</p>
