@@ -1,0 +1,57 @@
+<script lang='ts'>
+  import { deleteGroup, getAll, save } from '$lib/firebase/db/group';
+  import Button from '@components/button/Button.svelte';
+  import { authStore } from '$lib/stores/auth';
+  import { ulid } from 'ulid';
+  import { groupStore } from '$lib/stores/group';
+  import { Trash2 } from 'lucide-svelte';
+
+  const { user } = $authStore;
+
+  let groupRequest = getAll();
+  let newGroupName: string;
+
+  async function createGroup() {
+    if (!user?.authUid) {
+      throw new Error('User not logged in');
+    }
+    await save({ name: newGroupName, createdAt: new Date(), createdById: user.authUid, id: ulid() });
+    await reFetch();
+    newGroupName = '';
+  }
+
+  async function eventDeleteGroup(id) {
+    await deleteGroup(id);
+    await reFetch();
+  }
+
+  async function reFetch() {
+    groupRequest = getAll();
+    $groupStore = await getAll(); // I know this is duplicate, I am yet to think how to solve this
+  }
+
+</script>
+
+{#await groupRequest}
+  Loading groups
+{:then groups}
+  <div class='text-xl'>Group List</div>
+  <ul class='pt-2'>
+    {#each groups as group}
+      <li class='py-2 border-cyan-400 border-t flex items-center gap-2'>{group.name}
+        <Button on:click={()=>eventDeleteGroup(group.id)} category='danger'>
+          <Trash2 />
+          Delete
+        </Button>
+      </li>
+    {/each}
+  </ul>
+{:catch error}
+  <p>{error.message}</p>
+{/await}
+
+<form class='pt-4' on:submit|preventDefault={createGroup}>
+  <input type='text' bind:value={newGroupName} placeholder='New Group Name'
+         class='rounded-sm focus:outline outline-cyan-400 border border-cyan-400 dark:border-none text-md p-2 text-cyan-950' required>
+  <Button type='submit'>Create Group</Button>
+</form>

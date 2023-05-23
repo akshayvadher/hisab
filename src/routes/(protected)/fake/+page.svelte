@@ -5,6 +5,7 @@
   import { deleteUser, getAll, saveUser } from '$lib/firebase/db/user';
   import { onMount } from 'svelte';
   import Avatar from '@components/image/Avatar.svelte';
+  import { Trash2 } from 'lucide-svelte';
 
   let users = [] as User[];
 
@@ -36,13 +37,17 @@
 
 </script>
 
+<div class='text-2xl'>User list</div>
 {#each users as user (user.authUid)}
-<div class='flex items-center p-5 gap-2'>
+  <div class='py-2 border-cyan-400 border-t flex items-center gap-2'>
     <Avatar {user} />
     <p class='text-lg font-bold'>{user.name}</p>
     <p class='text-sm text-gray-500'>{user.email}</p>
     {#if user.fake }
-      <Button on:click={()=>deleteIt(user.authUid)} text='Delete' />
+      <Button on:click={()=>deleteIt(user.authUid)} category='danger'>
+        <Trash2 />
+        Delete
+      </Button>
     {/if}
   </div>
 {/each}

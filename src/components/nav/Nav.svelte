@@ -1,6 +1,8 @@
 <script lang='ts'>
   import A from '@components/button/A.svelte';
   import { onMount } from 'svelte';
+  import { groupStore } from '$lib/stores/group';
+  import { getAll } from '$lib/firebase/db/group';
 
   let isDark = false;
 
@@ -10,10 +12,18 @@
     document.body.classList.toggle('dark', isDark);
   }
 
-  onMount(() => {
+  $: extraRoutes = $groupStore.map(g => ({
+    title: g.name,
+    url: `/group/${g.id}`,
+  }));
+
+  onMount(async () => {
     isDark = localStorage.getItem('isDark') === 'true';
     document.body.classList.toggle('dark', isDark);
+
+    $groupStore = await getAll();
   });
+
 </script>
 
 <aside id='default-sidebar'
@@ -23,6 +33,10 @@
     <ul class='space-y-2 font-medium'>
       <li><A to='/dashboard' text='Dashboard' /></li>
       <li><A to='/me' text='Me' /></li>
+      {#each extraRoutes as route}
+        <li><A to={route.url} text={`Group / ${route.title}`} /></li>
+      {/each}
+      <li><A to='/group/add' text='+ Add Group' /></li>
       <li><A to='/fake' text='Fake' /></li>
       <li class='pt-10'>
         <button role='link'

@@ -1,10 +1,16 @@
 <script lang='ts'>
   export let text = '';
   export let className = '';
+  export let type: 'button' | 'submit' = 'button';
+  export let category: 'primary' | 'secondary' | 'danger' = 'primary';
 </script>
 
-<button type='button'
-        class={`p-2 bg-blue-500 rounded-sm text-white hover:bg-blue-600 ${className}`}
+<button {type}
+        class={`p-2 rounded-sm text-white transition-all duration-300 inline-flex gap-2 ${className}`}
+        class:bg-rose-400={category === 'danger'}
+        class:hover:bg-rose-600={category === 'danger'}
+        class:bg-blue-500={category === 'primary'}
+        class:hover:bg-blue-600={category === 'primary'}
         on:click
 >
   {#if text !== ''}
