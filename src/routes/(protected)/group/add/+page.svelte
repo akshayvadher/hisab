@@ -5,6 +5,7 @@
   import { ulid } from 'ulid';
   import { groupStore } from '$lib/stores/group';
   import { Trash2 } from 'lucide-svelte';
+  import { APP_TITLE } from '$lib/const';
 
   const { user } = $authStore;
 
@@ -29,13 +30,16 @@
     groupRequest = getAll();
     $groupStore = await getAll(); // I know this is duplicate, I am yet to think how to solve this
   }
-
 </script>
+
+<svelte:head>
+  <title>{APP_TITLE} | Manage Groups</title>
+</svelte:head>
 
 {#await groupRequest}
   Loading groups
 {:then groups}
-  <div class='text-xl'>Group List</div>
+  <div class='text-xl'>Groups</div>
   <ul class='pt-2'>
     {#each groups as group}
       <li class='py-2 border-cyan-400 border-t flex items-center gap-2'>{group.name}

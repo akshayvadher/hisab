@@ -6,6 +6,7 @@
   import { onMount } from 'svelte';
   import Avatar from '@components/image/Avatar.svelte';
   import { Trash2 } from 'lucide-svelte';
+  import { APP_TITLE } from '$lib/const';
 
   let users = [] as User[];
 
@@ -37,7 +38,11 @@
 
 </script>
 
-<div class='text-2xl'>User list</div>
+<svelte:head>
+  <title>{APP_TITLE} | Users</title>
+</svelte:head>
+
+<div class='text-2xl'>Users</div>
 {#each users as user (user.authUid)}
   <div class='py-2 border-cyan-400 border-t flex items-center gap-2'>
     <Avatar {user} />
