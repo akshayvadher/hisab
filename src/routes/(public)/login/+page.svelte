@@ -1,14 +1,31 @@
 <script lang='ts'>
+  import { onAuthStateChanged } from 'firebase/auth';
+  import { onMount } from 'svelte';
   import TiVendorMicrosoft from 'svelte-icons/ti/TiVendorMicrosoft.svelte';
   import Button from '@components/button/Button.svelte';
   import { login } from '$lib/firebase/auth';
   import { goto } from '$app/navigation';
   import { APP_TITLE } from '$lib/const';
+  import { firebaseAuth } from '$lib/firebase/firebase';
+  import { getUser } from '$lib/firebase/db/user';
+  import { authStore } from '$lib/stores/auth';
 
   async function doLogin() {
     await login();
-    await goto('/dashboard');
   }
+
+  onMount(async () => {
+    onAuthStateChanged(firebaseAuth, async (result) => {
+      if (result) {
+        const user = await getUser(result.uid);
+        $authStore = {
+          isAuthenticated: true,
+          user,
+        };
+        await goto('/dashboard');
+      }
+    });
+  });
 </script>
 
 <svelte:head>
