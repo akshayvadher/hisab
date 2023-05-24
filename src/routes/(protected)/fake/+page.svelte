@@ -7,6 +7,7 @@
   import Avatar from '@components/image/Avatar.svelte';
   import { Trash2 } from 'lucide-svelte';
   import { APP_TITLE } from '$lib/const';
+  import Header from '@components/typography/Header.svelte';
 
   let users = [] as User[];
 
@@ -42,9 +43,9 @@
   <title>{APP_TITLE} | Users</title>
 </svelte:head>
 
-<div class='text-2xl'>Users</div>
+<Header>Users</Header>
 {#each users as user (user.authUid)}
-  <div class='py-2 border-cyan-400 border-t flex items-center gap-2'>
+  <div class='py-2 border-b-gray-400 border-b flex items-center gap-2'>
     <Avatar {user} />
     <p class='text-lg font-bold'>{user.name}</p>
     <p class='text-sm text-gray-500'>{user.email}</p>
@@ -57,4 +58,4 @@
   </div>
 {/each}
 
-<Button on:click={addUser} text='Add User' />
+<Button on:click={addUser} text='Add User' className='mt-4'/>

@@ -6,6 +6,7 @@
   import { groupStore } from '$lib/stores/group';
   import { Trash2 } from 'lucide-svelte';
   import { APP_TITLE } from '$lib/const';
+  import Header from '@components/typography/Header.svelte';
 
   const { user } = $authStore;
 
@@ -39,10 +40,10 @@
 {#await groupRequest}
   Loading groups
 {:then groups}
-  <div class='text-xl'>Groups</div>
+  <Header>Groups</Header>
   <ul class='pt-2'>
     {#each groups as group}
-      <li class='py-2 border-cyan-400 border-t flex items-center gap-2'>{group.name}
+      <li class='py-2 border-b-gray-400 border-b flex items-center gap-2'>{group.name}
         <Button on:click={()=>eventDeleteGroup(group.id)} category='danger'>
           <Trash2 />
           Delete
@@ -56,6 +57,7 @@
 
 <form class='pt-4' on:submit|preventDefault={createGroup}>
   <input type='text' bind:value={newGroupName} placeholder='New Group Name'
-         class='rounded-sm focus:outline outline-cyan-400 border border-cyan-400 dark:border-none text-md p-2 text-cyan-950' required>
+         class='rounded-sm focus:outline outline-cyan-400 border border-cyan-400 dark:border-none text-md p-2 text-cyan-950'
+         required>
   <Button type='submit'>Create Group</Button>
 </form>
