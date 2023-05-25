@@ -18,7 +18,7 @@
   }
 </script>
 {#if url}
-  <img src={url} alt={`user ${user.name} profile photo`} class='h-8 rounded-sm inline' />
+  <img src={url} alt={`user ${user.name} profile photo`} class='h-8 rounded-3xl inline' />
 {:else}
   <span class='text-2xl'>🦉</span>
 {/if}

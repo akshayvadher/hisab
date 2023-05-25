@@ -6,7 +6,7 @@
 </script>
 
 <button {type}
-        class={`p-2 rounded-sm text-white transition-all duration-300 inline-flex gap-2 ${className}`}
+        class={`py-1 px-2 rounded-sm text-white transition-all duration-300 inline-flex gap-2 ${className}`}
         class:bg-rose-400={category === 'danger'}
         class:hover:bg-rose-600={category === 'danger'}
         class:bg-blue-500={category === 'primary'}

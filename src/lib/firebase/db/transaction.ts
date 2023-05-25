@@ -26,7 +26,7 @@ export async function getAll(groupId: string) {
   return transactions.filter(transaction => transaction.groupId === groupId); // TODO you know what
 }
 
-export async function deleteGroup(id: string) {
+export async function deleteTransaction(id: string) {
   const transactionDoc = doc(db, TRANSACTION_DB, id);
   await deleteDoc(transactionDoc);
 }

@@ -69,6 +69,9 @@ devDependencies:
   svelte-check:
     specifier: ^3.0.1
     version: 3.3.2(postcss@8.4.23)(svelte@3.59.1)
+  svelte-time:
+    specifier: ^0.7.1
+    version: 0.7.1
   tailwindcss:
     specifier: ^3.3.2
     version: 3.3.2
@@ -1408,6 +1411,10 @@ packages:
     resolution: {integrity: sha512-/Tb/JcjK111nNScGob5MNtsntNM1aCNUDipB/TkwZFhyDrrE47SOx/18wF2bbjgc3ZzCSKW1T5nt5EbFoAz/Vg==}
     engines: {node: '>=4'}
     hasBin: true
+    dev: true
+
+  /dayjs@1.11.7:
+    resolution: {integrity: sha512-+Yw9U6YO5TQohxLcIkrXBeY73WP3ejHWVvx8XCk3gxvQDCTEmS48ZrSZCKciI7Bhl/uCMyxYtE9UqRILmFphkQ==}
     dev: true
 
   /debug@4.3.4:
@@ -2760,6 +2767,12 @@ packages:
       strip-indent: 3.0.0
       svelte: 3.59.1
       typescript: 5.0.4
+    dev: true
+
+  /svelte-time@0.7.1:
+    resolution: {integrity: sha512-E7IL/85j7oj5fhxvmlau616TUbFfa6Vyy1PFTL3Y8SJGY6NXJaUj7DOYJrXVdoS3Rm9RVST0M6qWd6vqrYgM+w==}
+    dependencies:
+      dayjs: 1.11.7
     dev: true
 
   /svelte@3.59.1:

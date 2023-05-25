@@ -4,7 +4,7 @@
   import type { User } from '$lib/dto/user';
   import { deleteUser, getAll, saveUser } from '$lib/firebase/db/user';
   import { onMount } from 'svelte';
-  import Avatar from '@components/image/Avatar.svelte';
+  import Avatar from '@components/user/Avatar.svelte';
   import { Trash2 } from 'lucide-svelte';
   import { APP_TITLE } from '$lib/const';
   import Header from '@components/typography/Header.svelte';
