@@ -4,6 +4,7 @@
   import Header from '@components/typography/Header.svelte';
   import Select from '@components/form/Select.svelte';
   import MultiSelect from '@components/form/MultiSelect.svelte';
+  import File from '@components/form/File.svelte';
   import type { Debt, Transaction } from '$lib/dto/transaction';
   import { getAll } from '$lib/firebase/db/user';
   import { authStore } from '$lib/stores/auth';
@@ -34,6 +35,7 @@
       splitOption: 'equal',
       category: 'general',
       debt: [],
+      doc: '',
     };
     return t;
   };
@@ -106,7 +108,7 @@
             options={[{value: 'equal', label: 'Equal'}]} required></Select>
     <Select name='category' label='Category' bind:value={transaction.category}
             options={[{value: 'general', label: 'General'}]} required></Select>
-    <div>Files</div>
+    <File name='doc' label='Doc' bind:value={transaction.doc} transactionId={transaction.id} required />
     {#if calculationError}
       <div class='text-red-500'>{calculationError}</div>
     {/if}

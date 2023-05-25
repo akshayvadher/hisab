@@ -9,6 +9,7 @@ export interface Transaction {
   splitOption: 'equal' | 'share' | 'amount' | 'percentage';
   category: 'general';
   debt: Debt[];
+  doc: string;
 }
 
 export interface Debt {
