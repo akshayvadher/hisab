@@ -15,12 +15,14 @@
   export let change: string;
 
   let showForm = false;
+  let calculationError: string | null = null;
 
   const { user } = $authStore;
   if (!user || !groupId || !user.authUid) {
     throw new Error('User not logged in or invalid group id');
   }
   const newTransaction = () => {
+    calculationError = null;
     const t: Transaction = {
       id: ulid(),
       amount: 100,
@@ -49,12 +51,19 @@
       };
     });
 
+    transaction.amount = parseFloat(String(transaction.amount)); // Wierd javascript + browser thing. It converts to string sometimes.
     const total = debt.reduce((acc, curr) => acc + curr.amount, 0);
     if (total !== transaction.amount) {
       // cases like 10/3 is 3.33 so total is 9.99 so adding that 0.01 to any of the debt
       if (transaction.amount - total < 1) {
-        debt[0].amount += transaction.amount - total;
+        debt[0].amount = round(debt[0].amount + round(transaction.amount - total));
+        const total2 = debt.map(d => d.amount).reduce((acc, curr) => acc + curr, 0);
+        if (total2 !== transaction.amount) {
+          calculationError = 'All hell broke loose again. Stupid javascript floating point total is not matching.';
+          throw new Error('All hell broke loose again');
+        }
       } else {
+        calculationError = 'All hell broke loose';
         throw new Error('All hell broke loose');
       }
     }
@@ -98,5 +107,8 @@
     <Select name='category' label='Category' bind:value={transaction.category}
             options={[{value: 'general', label: 'General'}]} required></Select>
     <div>Files</div>
+    {#if calculationError}
+      <div class='text-red-500'>{calculationError}</div>
+    {/if}
   </Form>
 {/if}

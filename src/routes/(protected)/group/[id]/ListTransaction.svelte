@@ -26,7 +26,7 @@
     <li>Loading...</li>
   {:then transactions}
     {#each transactions as transaction (transaction.id)}
-      <li class='py-2 flex gap-2 items-center'>
+      <li class='py-2 flex gap-2 items-center flex-wrap'>
         <div>{transaction.description}</div>
         <div>₹{transaction.amount}
           Paid By
