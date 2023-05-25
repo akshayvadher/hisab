@@ -5,7 +5,14 @@ export interface Transaction {
   date: Date;
   groupId: string;
   paidById: string;
-  paidFor: string[];
+  paidForIds: string[];
   splitOption: 'equal' | 'share' | 'amount' | 'percentage';
   category: 'general';
+  debt: Debt[];
+}
+
+export interface Debt {
+  paidById: string;
+  paidForId: string;
+  amount: number;
 }

@@ -5,6 +5,7 @@
   import type { Transaction } from '$lib/dto/transaction';
   import UserCard from '@components/user/UserCard.svelte';
   import Button from '@components/button/Button.svelte';
+  import DebtAmount from './DebtAmount.svelte';
 
   export let groupId: string;
   if (!groupId) {
@@ -32,9 +33,10 @@
           <UserCard userAuthUid={transaction.paidById} />
         </div>
         <div>With</div>
-        {#each transaction.paidFor as paidFor}
+        {#each transaction.paidForIds as paidFor}
           <div>
             <UserCard userAuthUid={paidFor} />
+            <DebtAmount debt={transaction.debt} userAuthUid={paidFor} />
           </div>
         {/each}
         <div>
