@@ -6,6 +6,7 @@ export interface Transaction {
   groupId: string;
   paidById: string;
   paidForIds: string[];
+  createdById: string;
   splitOption: 'equal' | 'share' | 'amount' | 'percentage';
   category: 'general';
   debt: Debt[];

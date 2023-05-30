@@ -43,11 +43,14 @@
   <Header>Groups</Header>
   <ul class='pt-2'>
     {#each groups as group}
-      <li class='py-2 border-b-gray-400 border-b flex items-center gap-2'>{group.name}
-        <Button on:click={()=>eventDeleteGroup(group.id)} category='danger'>
-          <Trash2 />
-          Delete
-        </Button>
+      <li class='py-2 border-b-gray-400 border-b flex items-center gap-2'>
+        {group.name}
+        {#if group.createdById === user?.authUid}
+          <Button on:click={()=>eventDeleteGroup(group.id)} category='danger'>
+            <Trash2 />
+            Delete
+          </Button>
+        {/if}
       </li>
     {/each}
   </ul>
@@ -57,7 +60,7 @@
 
 <form class='pt-4' on:submit|preventDefault={createGroup}>
   <input type='text' bind:value={newGroupName} placeholder='New Group Name'
-         class='rounded-sm focus:outline outline-cyan-400 border border-cyan-400 dark:border-none text-md p-2 text-cyan-950'
+         class='rounded-sm focus:outline outline-cyan-400 border border-cyan-400 dark:border-none text-md px-2 py-1 text-cyan-950'
          required>
   <Button type='submit'>Create Group</Button>
 </form>

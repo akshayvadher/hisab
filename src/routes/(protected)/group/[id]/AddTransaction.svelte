@@ -32,6 +32,7 @@
       groupId,
       paidById: user.authUid,
       paidForIds: [user.authUid],
+      createdById: user.authUid,
       splitOption: 'equal',
       category: 'general',
       debt: [],
@@ -82,7 +83,7 @@
 
 </script>
 
-<Header>Add transaction
+<Header paddingTop>Add transaction
   <button role='link' class='text-sm hover:text-teal-600 transition-all duration-300 dark:hover:text-teal-200'
           on:click={()=> showForm = !showForm}>{showForm ? '➖' : '➕'}
     Form

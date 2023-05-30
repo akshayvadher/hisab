@@ -1,6 +1,6 @@
 <script lang='ts'>
   import type { User } from '$lib/dto/user';
-  import { getDoc } from '$lib/firebase/file';
+  import { getDoc, PROFILE_PHOTO_PATH } from '$lib/firebase/file';
 
 
   export let user: User;
@@ -11,7 +11,7 @@
       let photoUrl = user.photoUrl;
       if (photoUrl.startsWith('https://')) {
         url = photoUrl;
-      } else if (photoUrl.startsWith('profilePhotos')) {
+      } else if (photoUrl.startsWith(PROFILE_PHOTO_PATH)) {
         getDoc(photoUrl).then(_url => url = _url);
       }
     }
