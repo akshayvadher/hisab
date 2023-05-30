@@ -15,7 +15,7 @@
 {#await userRequest}
   🕷️
 {:then user}
-  <div class='border-2 rounded-3xl border-emerald-400 dark:border-emerald-600 inline-flex gap-1 w-fit items-center'>
+  <div class='border-2 rounded-3xl border-emerald-400 hover:border-emerald-600 dark:border-emerald-600 dark:hover:border-emerald-400 inline-flex gap-1 w-fit items-center'>
     <div>
       <Avatar {user} />
     </div>
