@@ -41,7 +41,7 @@
   Loading groups
 {:then groups}
   <Header>Groups</Header>
-  <ul class='pt-2'>
+  <ul>
     {#each groups as group}
       <li class='py-2 border-b-gray-400 border-b flex items-center gap-2'>
         {group.name}
