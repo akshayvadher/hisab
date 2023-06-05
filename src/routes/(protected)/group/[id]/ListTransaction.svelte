@@ -3,13 +3,25 @@
   import { deleteTransaction, getAll } from '$lib/firebase/db/transaction';
   import type { Transaction } from '$lib/dto/transaction';
   import TransactionItem from './TransactionItem.svelte';
+  import { authStore } from '$lib/stores/auth';
 
   export let groupId: string;
-  if (!groupId) {
+  const { user } = $authStore;
+  if (!groupId || !user) {
     throw new Error('Seriously? Why?');
   }
 
   let transactionRequest: Promise<Transaction[]> = getAll(groupId);
+
+  let iSpent = 0;
+  let iPaid = 0;
+  let iGet = 0;
+  transactionRequest.then((data) => {
+    const debts = data.flatMap(transaction => transaction.debt);
+    iSpent = debts.filter(debt => debt.paidForId === user.authUid).reduce((acc, debt) => acc + debt.amount, 0);
+    iPaid = debts.filter(debt => debt.paidById === user.authUid).reduce((acc, debt) => acc + debt.amount, 0);
+    iGet = iPaid - iSpent;
+  });
 
   async function deleteTransactionEvent(event: CustomEvent<string>) {
     await deleteTransaction(event.detail);
@@ -17,6 +29,10 @@
   }
 </script>
 
+<Header paddingTop>Summary</Header>
+<div class='mt-2'>
+  I spent {iSpent} and I paid {iPaid} so I get {iGet}
+</div>
 <Header paddingTop>Transactions</Header>
 <ul>
   {#await transactionRequest}
