@@ -1,8 +1,10 @@
 <script lang='ts'>
   export let text = '';
+  export let className = '';
 </script>
-<button class='underline hover:text-teal-400 transition-all duration-300 dark:hover:text-teal-200'
-        on:click>
+<button
+  class={`inline-flex gap-2 underline hover:text-teal-400 transition-all duration-300 dark:hover:text-teal-200 ${className}`}
+  on:click>
   {#if text !== ''}
     {text}
   {:else}

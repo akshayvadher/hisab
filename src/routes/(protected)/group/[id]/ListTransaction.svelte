@@ -1,9 +1,12 @@
 <script lang='ts'>
   import Header from '@components/typography/Header.svelte';
+  import LinkButton from '@components/button/LinkButton.svelte';
   import { deleteTransaction, getAll } from '$lib/firebase/db/transaction';
   import type { Transaction } from '$lib/dto/transaction';
   import TransactionItem from './TransactionItem.svelte';
   import { authStore } from '$lib/stores/auth';
+  import { goto } from '$app/navigation';
+  import { round } from '$lib/interesting/math';
 
   export let groupId: string;
   const { user } = $authStore;
@@ -19,8 +22,8 @@
   let amIInvolved = false;
   transactionRequest.then((data) => {
     const debts = data.flatMap(transaction => transaction.debt);
-    iSpent = debts.filter(debt => debt.paidForId === user.authUid).reduce((acc, debt) => acc + debt.amount, 0);
-    iPaid = debts.filter(debt => debt.paidById === user.authUid).reduce((acc, debt) => acc + debt.amount, 0);
+    iSpent = round(debts.filter(debt => debt.paidForId === user.authUid).reduce((acc, debt) => acc + debt.amount, 0));
+    iPaid = round(debts.filter(debt => debt.paidById === user.authUid).reduce((acc, debt) => acc + debt.amount, 0));
     iGet = iPaid - iSpent;
     amIInvolved = debts.findIndex(debt => debt.paidById === user.authUid || debt.paidForId === user.authUid) !== -1;
   });
@@ -33,7 +36,11 @@
 
 <Header paddingTop>Summary</Header>
 <div class='mt-2'>
-  I spent {iSpent} and I paid {iPaid} so I get {iGet}. Am I involved? {amIInvolved ? 'Yes' : 'No'}
+  I spent {iSpent} and I paid {iPaid} so I get {iGet}. Am I involved? {amIInvolved ? 'Yes' : 'No'}.
+  {#if amIInvolved}
+    Show my spend
+    <LinkButton on:click={()=>goto(`/group/${groupId}/print`)} text='Report' />
+  {/if}
 </div>
 <Header paddingTop>Transactions</Header>
 <ul>

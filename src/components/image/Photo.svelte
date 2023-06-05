@@ -5,6 +5,7 @@
 
   export let src: string;
   export let alt: string;
+  export let className = '';
 
   let big = false;
 
@@ -20,7 +21,7 @@
   }
 </script>
 {#if url}
-  <img src={url} {alt} class='rounded-md inline transition-all'
+  <img src={url} {alt} class={`rounded-md inline transition-all cursor-pointer ${className}`}
        class:h-80={!big}
        class:h-auto={big}
        on:click={() => big = !big}
