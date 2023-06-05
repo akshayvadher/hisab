@@ -3,6 +3,7 @@
   import { onMount } from 'svelte';
   import { groupStore } from '$lib/stores/group';
   import { getAll } from '$lib/firebase/db/group';
+  import LinkButton from '@components/button/LinkButton.svelte';
 
   let isDark = false;
 
@@ -39,11 +40,10 @@
       <li><A to='/group/add' text='+ Add Group' /></li>
       <li><A to='/fake' text='Fake' /></li>
       <li class='pt-10'>
-        <button role='link'
-                class='underline hover:text-teal-600 transition-all duration-300 dark:hover:text-teal-400'
-                on:click={toggle}>
+        <LinkButton
+          on:click={toggle}>
           {isDark ? 'Light' : 'Dark'}
-        </button>
+        </LinkButton>
       </li>
       <li><A to='/logout' text='Logout' /></li>
     </ul>
