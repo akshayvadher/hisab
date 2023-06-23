@@ -31,15 +31,11 @@
 
   onMount(async () => {
     const allTransactions = await getAll(data.id);
-    transactions = allTransactions.filter(transaction => transaction.debt.find(debt => debt.paidForId === user.authUid));
-    createSummary(transactions);
+    setOwnTransactionsOnly(allTransactions);
   });
-  const createSummary = (data: Transaction[]) => {
-    transactions = data;
+  const setOwnTransactionsOnly = (allTransactions: Transaction[]) => {
+    transactions = allTransactions.filter(transaction => transaction.debt.find(debt => debt.paidForId === user.authUid));
     transactions.forEach((t) => printIndexes.push(t.id));
-  };
-  const print = () => {
-    window.print();
   };
 </script>
 
@@ -51,7 +47,7 @@
   <Header paddingTop>Note</Header>
   <p class='mt-2'>Print works best in light mode</p>
   {#if amIInvolved}
-    <LinkButton on:click={print} className='mt-2'>
+    <LinkButton on:click={()=>window.print()} className='mt-2'>
       <PrinterIcon />
       Print
     </LinkButton>
