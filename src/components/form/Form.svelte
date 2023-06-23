@@ -6,7 +6,7 @@
   export let submitText = 'Submit';
 </script>
 
-<form on:submit|preventDefault transition:slide={{easing: quartInOut}}>
+<form on:submit|preventDefault transition:slide|global={{easing: quartInOut}}>
   <slot />
   <Button type='submit' text={submitText} />
 </form>

@@ -26,7 +26,7 @@
        class:h-auto={big}
        on:click={() => big = !big}
        on:keypress={() => big = !big}
-       transition:fade />
+       transition:fade|global />
 {:else}
   <span class='text-2xl'>👽</span>
 {/if}
