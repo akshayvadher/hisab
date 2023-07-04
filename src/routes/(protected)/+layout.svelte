@@ -11,7 +11,7 @@
 <div class='w-full min-h-screen p-2 transition-all duration-300 dark:bg-gray-700 dark:text-white'>
   <AuthProtector>
     <Nav />
-    <main class='p-4 sm:ml-64'>
+    <main class='p-4 sm:ml-64 print:m-1'>
       <slot />
     </main>
   </AuthProtector>

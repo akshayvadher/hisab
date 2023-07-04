@@ -45,7 +45,8 @@
 
 <div class='print:hidden'>
   <Header paddingTop>Note</Header>
-  <p class='mt-2'>Print works best in light mode</p>
+  <p class='mt-2'>Print works best in light mode (Dark Mode print is work in progress)</p>
+  <p class='mt-2'>And for some weird reasons, Print works best in Edge not in Chrome</p>
   {#if amIInvolved}
     <LinkButton on:click={()=>window.print()} className='mt-2'>
       <PrinterIcon />
@@ -67,7 +68,7 @@
   </DetailValue>
 </Detail>
 <table
-  class='border-collapse border border-slate-400 dark:border-gray-400 print:w-full mt-2 print:mt-10 w-full md:w-2/3'>
+  class='border-collapse border border-slate-400 dark:border-gray-400 print:w-full mt-2 print:mt-10 print:text-black w-full md:w-2/3'>
   <thead>
   <tr>
     <th class='print:hidden'></th>
