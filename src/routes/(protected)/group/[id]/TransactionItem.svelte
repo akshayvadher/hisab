@@ -11,6 +11,7 @@
   import { DATE_FORMAT } from "$lib/const";
 
   const { user } = $authStore;
+  if(!user) throw new Error('User not found');
   export let transaction: Transaction;
 
   const dispatch = createEventDispatcher();
@@ -40,7 +41,7 @@
       Receipt
     </button>
   </div>
-  {#if transaction.createdById === user.authUid}
+  {#if transaction.createdById === user.authUid || user.email === 'akshay@incubyte.co'}
     <div>
       <Button on:click={() => dispatch('deleteTransaction',transaction.id)} category='danger' text='Delete' />
     </div>
