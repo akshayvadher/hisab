@@ -73,7 +73,8 @@
   <tr>
     <th class='print:hidden'></th>
     <th>Description</th>
-    <th>Amount</th>
+    <th>Total Amount</th>
+    <th>My Share</th>
     <th>Date</th>
   </tr>
   </thead>
@@ -82,6 +83,7 @@
     <tr class:print:hidden={!printIndexes.includes(transaction.id)}>
       <td class='print:hidden w-1'><input type='checkbox' bind:group={printIndexes} value={transaction.id} /></td>
       <td>{transaction.description}</td>
+      <td class="text-right">₹{transaction.amount}</td>
       <td class='text-right'>₹{transaction.debt.find(d => d.paidForId === user.authUid)?.amount}</td>
       <td>
         <Time timestamp={new Date(transaction.date.seconds * 1000)} />
@@ -95,7 +97,8 @@
 {#each transactionsToPrint as transaction (transaction.id)}
   <Detail className='mt-2'>
     <DetailValue label='Description'>{transaction.description}</DetailValue>
-    <DetailValue label='Amount'>₹{transaction.debt.find(d => d.paidForId === user.authUid)?.amount}</DetailValue>
+    <DetailValue label='Total Amount'>₹{transaction.amount}</DetailValue>
+    <DetailValue label='My Share'>₹{transaction.debt.find(d => d.paidForId === user.authUid)?.amount}</DetailValue>
     <DetailValue label='Date'>
       <Time timestamp={new Date(transaction.date.seconds * 1000)} />
     </DetailValue>
