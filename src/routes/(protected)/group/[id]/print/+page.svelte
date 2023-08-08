@@ -6,12 +6,13 @@
   import type { Transaction } from '$lib/dto/transaction';
   import { authStore } from '$lib/stores/auth';
   import { round } from '$lib/interesting/math';
-  import { APP_TITLE } from '$lib/const';
+  import { APP_TITLE, DATE_FORMAT } from "$lib/const";
   import Time from 'svelte-time';
   import { PrinterIcon } from 'lucide-svelte';
   import Detail from '@components/detail/Detail.svelte';
   import DetailValue from '@components/detail/DetailValue.svelte';
   import Photo from '@components/image/Photo.svelte';
+  import { parse, min, max } from "date-fns";
 
   export let data;
   const { user } = $authStore;
@@ -26,8 +27,8 @@
   $: myDebts = transactionsToPrint.flatMap(transaction => transaction.debt);
   $: iSpent = round(myDebts.filter(debt => debt.paidForId === user.authUid).reduce((acc, debt) => acc + debt.amount, 0));
   $: amIInvolved = myDebts.findIndex(debt => debt.paidById === user.authUid || debt.paidForId === user.authUid) !== -1;
-  $: maxDate = new Date(Math.max(...transactionsToPrint.map(transaction => transaction.date.seconds * 1000)));
-  $: minDate = new Date(Math.min(...transactionsToPrint.map(transaction => transaction.date.seconds * 1000)));
+  $: maxDate = max(transactionsToPrint.map(transaction => parse(transaction.date, DATE_FORMAT, new Date())));
+  $: minDate = min(transactionsToPrint.map(transaction => parse(transaction.date, DATE_FORMAT, new Date())));
 
   onMount(async () => {
     const allTransactions = await getAll(data.id);
@@ -86,7 +87,7 @@
       <td class="text-right">₹{transaction.amount}</td>
       <td class='text-right'>₹{transaction.debt.find(d => d.paidForId === user.authUid)?.amount}</td>
       <td>
-        <Time timestamp={new Date(transaction.date.seconds * 1000)} />
+        <Time timestamp={parse(transaction.date, DATE_FORMAT, new Date())} />
       </td>
     </tr>
   {/each}
@@ -100,7 +101,7 @@
     <DetailValue label='Total Amount'>₹{transaction.amount}</DetailValue>
     <DetailValue label='My Share'>₹{transaction.debt.find(d => d.paidForId === user.authUid)?.amount}</DetailValue>
     <DetailValue label='Date'>
-      <Time timestamp={new Date(transaction.date.seconds * 1000)} />
+      <Time timestamp={parse(transaction.date, DATE_FORMAT, new Date())} />
     </DetailValue>
   </Detail>
   <Photo src={transaction.doc} alt='Receipt' className='mt-2 print:max-w-screen print:w-auto print:max-h-screen print:h-auto' />

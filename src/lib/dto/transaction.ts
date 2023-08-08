@@ -2,7 +2,7 @@ export interface Transaction {
   id: string;
   amount: number;
   description: string;
-  date: Date | { seconds: number, nanoseconds: number };
+  date: string;
   groupId: string;
   paidById: string;
   paidForIds: string[];

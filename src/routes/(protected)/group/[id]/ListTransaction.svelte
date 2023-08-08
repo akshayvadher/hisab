@@ -1,17 +1,16 @@
-<script lang='ts'>
-  import Header from '@components/typography/Header.svelte';
-  import LinkButton from '@components/button/LinkButton.svelte';
-  import { deleteTransaction, getAll } from '$lib/firebase/db/transaction';
-  import type { Transaction } from '$lib/dto/transaction';
-  import TransactionItem from './TransactionItem.svelte';
-  import { authStore } from '$lib/stores/auth';
-  import { goto } from '$app/navigation';
-  import { round } from '$lib/interesting/math';
+<script lang="ts">
+  import Header from "@components/typography/Header.svelte";
+  import { deleteTransaction, getAll } from "$lib/firebase/db/transaction";
+  import type { Transaction } from "$lib/dto/transaction";
+  import TransactionItem from "./TransactionItem.svelte";
+  import { authStore } from "$lib/stores/auth";
+  import { round } from "$lib/interesting/math";
+  import A from "@components/button/A.svelte";
 
   export let groupId: string;
   const { user } = $authStore;
   if (!groupId || !user) {
-    throw new Error('Seriously? Why?');
+    throw new Error("Seriously? Why?");
   }
 
   let transactionRequest: Promise<Transaction[]> = getAll(groupId);
@@ -35,11 +34,11 @@
 </script>
 
 <Header paddingTop>Summary</Header>
-<div class='mt-2'>
+<div class="mt-2">
   I spent {iSpent} and I paid {iPaid} so I get {iGet}. Am I involved? {amIInvolved ? 'Yes' : 'No'}.
   {#if amIInvolved}
     Show my spend
-    <LinkButton on:click={()=>goto(`/group/${groupId}/print`)} text='Report' />
+    <A to={`/group/${groupId}/print`} text="Report" />
   {/if}
 </div>
 <Header paddingTop>Transactions</Header>

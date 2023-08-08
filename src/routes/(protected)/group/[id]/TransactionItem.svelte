@@ -1,4 +1,5 @@
 <script lang='ts'>
+  import { parse } from 'date-fns'
   import type { Transaction } from '$lib/dto/transaction';
   import UserCard from '@components/user/UserCard.svelte';
   import Time from 'svelte-time';
@@ -7,6 +8,7 @@
   import { createEventDispatcher } from 'svelte';
   import { authStore } from '$lib/stores/auth';
   import Photo from '@components/image/Photo.svelte';
+  import { DATE_FORMAT } from "$lib/const";
 
   const { user } = $authStore;
   export let transaction: Transaction;
@@ -30,7 +32,7 @@
     </div>
   {/each}
   <div>
-    <Time relative live timestamp={new Date(transaction.date.seconds * 1000)} />
+    <Time relative live timestamp={parse(transaction.date, DATE_FORMAT, new Date())} />
   </div>
   <div>
     <button role='link' class='text-sm hover:text-teal-600 transition-all duration-300 dark:hover:text-teal-200'
