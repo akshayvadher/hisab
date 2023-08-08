@@ -20,7 +20,7 @@
   }
 
   let transactions: Transaction[] = [];
-  let printIndexes = [];
+  let printIndexes: string[] = [];
 
   $: transactionsToPrint = transactions.filter((t) => printIndexes.includes(t.id));
   $: myDebts = transactionsToPrint.flatMap(transaction => transaction.debt);
