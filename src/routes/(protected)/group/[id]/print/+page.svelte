@@ -93,9 +93,9 @@
   {/each}
   </tbody>
 </table>
-<div class='break-after-page'></div>
 <Header paddingTop className='print:hidden'>Detail</Header>
 {#each transactionsToPrint as transaction (transaction.id)}
+  <div class='break-after-page'></div>
   <Detail className='mt-2'>
     <DetailValue label='Description'>{transaction.description}</DetailValue>
     <DetailValue label='Total Amount'>₹{transaction.amount}</DetailValue>
@@ -104,8 +104,7 @@
       <Time timestamp={parse(transaction.date, DATE_FORMAT, new Date())} />
     </DetailValue>
   </Detail>
-  <Photo src={transaction.doc} alt='Receipt' className='mt-2 print:max-w-screen print:w-auto print:max-h-screen print:h-auto' />
-  <div class='break-after-page'></div>
+  <Photo src={transaction.doc} alt='Receipt' className='mt-2 print:max-w-screen print:w-auto print:max-h-[calc(100vh-5rem)] print:h-auto' />
 {:else}
   <div>No transactions</div>
 {/each}
