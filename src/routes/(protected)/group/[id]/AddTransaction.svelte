@@ -13,13 +13,15 @@
   import { save } from '$lib/firebase/db/transaction';
   import { round } from '$lib/interesting/math';
   import DateTimeLocal from '@components/form/DateTimeLocal.svelte';
-  import { DATE_FORMAT } from "$lib/const";
+  import { DATE_FORMAT } from '$lib/const';
+  import InputNumber from "@components/form/InputNumber.svelte";
 
   export let groupId: string;
   export let change: string;
 
   let showForm = false;
   let calculationError: string | null = null;
+  let amountMap: { [key: string]: number } = {};
 
   const { user } = $authStore;
   if (!user || !groupId || !user.authUid) {
@@ -52,13 +54,17 @@
     let debt = transaction.paidForIds.map((paidForId) => {
       return {
         paidForId,
-        amount: round(transaction.amount / transaction.paidForIds.length),
+        amount:
+          transaction.splitOption === 'equal'
+            ? round(transaction.amount / transaction.paidForIds.length)
+            : amountMap[paidForId],
         paidById: transaction.paidById,
       };
     });
 
     transaction.amount = parseFloat(String(transaction.amount)); // Wierd javascript + browser thing. It converts to string sometimes.
     const total = debt.reduce((acc, curr) => acc + curr.amount, 0);
+    console.log('total', total, transaction.amount, debt)
     if (total !== transaction.amount) {
       // cases like 10/3 is 3.33 so total is 9.99 so adding that 0.01 to any of the debt
       if (transaction.amount - total < 1) {
@@ -70,7 +76,7 @@
           throw new Error('All hell broke loose again');
         }
       } else {
-        calculationError = 'All hell broke loose';
+        calculationError = 'All hell broke loose. Individual amount and total is not matching.'
         throw new Error('All hell broke loose');
       }
     }
@@ -99,7 +105,7 @@
 {#if showForm}
   <Form submitText="+ Transaction" on:submit={saveTransaction}>
     <Input name="description" label="Description" bind:value={transaction.description} required />
-    <Input name="amount" label="Amount" bind:value={transaction.amount} required />
+    <InputNumber name="amount" label="Amount" bind:value={transaction.amount} required />
     <DateTimeLocal name="date" label="Date" bind:value={transaction.date} required />
     {#await usersRequest}
       Loading users...
@@ -122,16 +128,32 @@
         })}
         required
       ></MultiSelect>
+      <Select
+        name="splitOption"
+        label="Split Option"
+        bind:value={transaction.splitOption}
+        options={[
+          { value: 'equal', label: 'Equal' },
+          { value: 'amount', label: 'Amount' },
+        ]}
+        required
+      ></Select>
+      {#if transaction.splitOption === 'amount'}
+        {#each transaction.paidForIds as paidForId}
+          <InputNumber
+            name="amount"
+            label={`Amount for ${users.find((u) => u.authUid === paidForId)?.name}`}
+            bind:value={amountMap[paidForId]}
+            required
+          />
+        {/each}
+        {#if Object.entries(amountMap).map((k) => k[1]).reduce((acc, curr) => acc + curr, 0) !== transaction.amount}
+          <div class="text-red-500">Total amount is not matching</div>
+        {/if}
+      {/if}
     {:catch error}
       {error}
     {/await}
-    <Select
-      name="splitOption"
-      label="Split Option"
-      bind:value={transaction.splitOption}
-      options={[{ value: 'equal', label: 'Equal' }]}
-      required
-    ></Select>
     <Select
       name="category"
       label="Category"
