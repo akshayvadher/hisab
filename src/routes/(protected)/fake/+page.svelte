@@ -1,22 +1,30 @@
-<script lang='ts'>
+<script lang="ts" context="module">
+  export interface FakeUserType extends User {
+    fake?: boolean;
+  }
+</script>
+
+<script lang="ts">
   import Button from '@components/button/Button.svelte';
   import { faker } from '@faker-js/faker';
   import type { User } from '$lib/dto/user';
-  import { deleteUser, getAll, saveUser } from '$lib/firebase/db/user';
+  import { deleteUser, getAll, saveUser, update } from '$lib/firebase/db/user';
   import { onMount } from 'svelte';
-  import Avatar from '@components/user/Avatar.svelte';
-  import { Trash2 } from 'lucide-svelte';
   import { APP_TITLE } from '$lib/const';
   import Header from '@components/typography/Header.svelte';
+  import UserItem from './UserItem.svelte';
 
   let users = [] as User[];
 
-  interface FakeUserType extends User {
-    fake: boolean;
+  async function deleteIt(e: CustomEvent) {
+    const id = e.detail;
+    await deleteUser(id);
+    users = await getAll();
   }
 
-  async function deleteIt(id: string) {
-    await deleteUser(id);
+  async function updateIt(e: CustomEvent) {
+    const user = e.detail;
+    await update(user);
     users = await getAll();
   }
 
@@ -36,7 +44,6 @@
   onMount(async () => {
     users = await getAll();
   });
-
 </script>
 
 <svelte:head>
@@ -45,17 +52,7 @@
 
 <Header>Users</Header>
 {#each users as user (user.authUid)}
-  <div class='py-2 border-b-gray-400 border-b flex items-center gap-2'>
-    <Avatar {user} />
-    <p class='text-lg font-bold'>{user.name}</p>
-    <p class='text-sm text-gray-500'>{user.email}</p>
-    {#if user.fake }
-      <Button on:click={()=>deleteIt(user.authUid)} category='danger'>
-        <Trash2 />
-        Delete
-      </Button>
-    {/if}
-  </div>
+  <UserItem {user} on:delete={deleteIt} on:update={updateIt} />
 {/each}
 
-<Button on:click={addUser} text='Add User' className='mt-4'/>
+<Button on:click={addUser} text="Add User" className="mt-4" />

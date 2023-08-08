@@ -1,5 +1,5 @@
 import type { UserCredential } from 'firebase/auth';
-import { collection, deleteDoc, doc, getDoc, getDocs, setDoc } from 'firebase/firestore';
+import { collection, deleteDoc, doc, getDoc, getDocs, setDoc, updateDoc } from 'firebase/firestore';
 import { db } from '$lib/firebase/firebase';
 import type { User } from '$lib/dto/user';
 
@@ -41,4 +41,10 @@ export async function getAll() {
 export async function deleteUser(id: string) {
   const userDoc = doc(db, USER_DB, id);
   await deleteDoc(userDoc);
+}
+
+export async function update(user: User) {
+  const userDoc = doc(db, USER_DB, user.authUid);
+  await updateDoc(userDoc, { ...user});
+  return user;
 }
