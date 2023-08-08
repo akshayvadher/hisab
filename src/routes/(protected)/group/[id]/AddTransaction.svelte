@@ -15,6 +15,7 @@
   import DateTimeLocal from '@components/form/DateTimeLocal.svelte';
   import { DATE_FORMAT } from '$lib/const';
   import InputNumber from "@components/form/InputNumber.svelte";
+  import Value from '@components/form/Value.svelte';
 
   export let groupId: string;
   export let change: string;
@@ -87,6 +88,7 @@
     const debt = injectDebt();
     const transactionToSave = { ...transaction, debt };
     await save(transactionToSave);
+    amountMap = {};
     transaction = newTransaction();
     change = ulid();
   }
@@ -138,18 +140,21 @@
         ]}
         required
       ></Select>
-      {#if transaction.splitOption === 'amount'}
-        {#each transaction.paidForIds as paidForId}
+
+      {#each transaction.paidForIds as paidForId}
+        {#if transaction.splitOption === 'amount'}
           <InputNumber
             name="amount"
             label={`Amount for ${users.find((u) => u.authUid === paidForId)?.name}`}
             bind:value={amountMap[paidForId]}
             required
           />
-        {/each}
-        {#if Object.entries(amountMap).map((k) => k[1]).reduce((acc, curr) => acc + curr, 0) !== transaction.amount}
-          <div class="text-red-500">Total amount is not matching</div>
+        {:else}
+          <Value name='amount' label={`Amount for ${users.find((u) => u.authUid === paidForId)?.name}`} value={`₹${round(transaction.amount / transaction.paidForIds.length)}`} />
         {/if}
+      {/each}
+      {#if transaction.splitOption === 'amount' && Object.entries(amountMap).map((k) => k[1]).reduce((acc, curr) => acc + curr, 0) !== transaction.amount}
+        <div class="text-red-500">Total amount is not matching by {Object.entries(amountMap).map((k) => k[1]).reduce((acc, curr) => acc + curr, 0) - transaction.amount}</div>
       {/if}
     {:catch error}
       {error}
