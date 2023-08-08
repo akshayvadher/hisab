@@ -45,6 +45,7 @@
           {isDark ? 'Light' : 'Dark'}
         </LinkButton>
       </li>
+      <li><A to='https://github.com/akshayvadher/hisab' text='Source' /></li>
       <li><A to='/logout' text='Logout' /></li>
     </ul>
   </div>

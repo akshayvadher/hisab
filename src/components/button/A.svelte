@@ -2,7 +2,8 @@
   export let to: string;
   export let text = '';
 </script>
-<a href={to} class='underline hover:text-teal-400 transition-all duration-300 dark:hover:text-teal-200'>
+<a href={to} target={to.startsWith('http') ? '_blank' : null}
+   class='underline hover:text-teal-400 transition-all duration-300 dark:hover:text-teal-200'>
   {#if text !== ''}
     {text}
   {:else}
