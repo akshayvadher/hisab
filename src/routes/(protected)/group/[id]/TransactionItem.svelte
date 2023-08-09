@@ -9,6 +9,7 @@
   import { authStore } from '$lib/stores/auth';
   import Photo from '@components/image/Photo.svelte';
   import { DATE_FORMAT } from "$lib/const";
+  import Currency from '@components/format/Currency.svelte';
 
   const { user } = $authStore;
   if(!user) throw new Error('User not found');
@@ -21,7 +22,7 @@
 
 <li class='py-2 flex gap-2 items-center flex-wrap'>
   <div>{transaction.description}</div>
-  <div>₹{transaction.amount}
+  <div><Currency number={transaction.amount} />
     Paid By
     <UserCard userAuthUid={transaction.paidById} />
   </div>

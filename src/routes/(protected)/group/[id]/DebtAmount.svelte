@@ -1,5 +1,6 @@
 <script lang='ts'>
   import type { Debt } from '$lib/dto/transaction';
+  import Currency from '@components/format/Currency.svelte';
 
   export let debt: Debt[];
   export let userAuthUid: string;
@@ -8,4 +9,5 @@
   }
   let amount = debt.find((d) => d.paidForId === userAuthUid)?.amount;
 </script>
-₹{amount}
+<Currency number={amount} />
+

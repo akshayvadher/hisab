@@ -6,6 +6,7 @@
   import { authStore } from "$lib/stores/auth";
   import { round } from "$lib/interesting/math";
   import A from "@components/button/A.svelte";
+  import Currency from '@components/format/Currency.svelte';
 
   export let groupId: string;
   const { user } = $authStore;
@@ -35,7 +36,7 @@
 
 <Header paddingTop>Summary</Header>
 <div class="mt-2">
-  I spent {iSpent} and I paid {iPaid} so I get {iGet}. Am I involved? {amIInvolved ? 'Yes' : 'No'}.
+  I spent <Currency number={iSpent} /> and I paid <Currency number={iPaid} /> so I get <Currency number={iGet} />. Am I involved? {amIInvolved ? 'Yes' : 'No'}.
   {#if amIInvolved}
     Show my spend
     <A to={`/group/${groupId}/print`} text="Report" />

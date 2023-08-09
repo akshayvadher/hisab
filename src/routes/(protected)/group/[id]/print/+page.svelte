@@ -1,5 +1,8 @@
 <script lang='ts'>
   import { onMount } from 'svelte';
+  import { parse, min, max } from "date-fns";
+  import Time from 'svelte-time';
+  import { PrinterIcon } from 'lucide-svelte';
   import Header from '@components/typography/Header.svelte';
   import LinkButton from '@components/button/LinkButton.svelte';
   import { getAll } from '$lib/firebase/db/transaction';
@@ -7,12 +10,10 @@
   import { authStore } from '$lib/stores/auth';
   import { round } from '$lib/interesting/math';
   import { APP_TITLE, DATE_FORMAT } from "$lib/const";
-  import Time from 'svelte-time';
-  import { PrinterIcon } from 'lucide-svelte';
   import Detail from '@components/detail/Detail.svelte';
   import DetailValue from '@components/detail/DetailValue.svelte';
   import Photo from '@components/image/Photo.svelte';
-  import { parse, min, max } from "date-fns";
+  import Currency from '@components/format/Currency.svelte';
 
   export let data;
   const { user } = $authStore;
@@ -41,13 +42,15 @@
 </script>
 
 <svelte:head>
-  <title>{APP_TITLE} | Report</title>
+  <title>{APP_TITLE} | {data.group.name} | Report</title>
 </svelte:head>
 
 <div class='print:hidden'>
   <Header paddingTop>Note</Header>
-  <p class='mt-2'>Print works best in light mode (Dark Mode print is work in progress)</p>
-  <p class='mt-2'>And for some weird reasons, Print works best in Edge not in Chrome</p>
+  <ul class='mt-2'>
+    <li>Print will print in PDF in light mode always</li>
+    <li>Set Letter or A4 page size with portrait orientation for the best experience</li>
+  </ul>
   {#if amIInvolved}
     <LinkButton on:click={()=>window.print()} className='mt-2'>
       <PrinterIcon />
@@ -84,8 +87,8 @@
     <tr class:print:hidden={!printIndexes.includes(transaction.id)}>
       <td class='print:hidden w-1'><input type='checkbox' bind:group={printIndexes} value={transaction.id} /></td>
       <td>{transaction.description}</td>
-      <td class="text-right">₹{transaction.amount}</td>
-      <td class='text-right'>₹{transaction.debt.find(d => d.paidForId === user.authUid)?.amount}</td>
+      <td class="text-right"><Currency number={transaction.amount} /></td>
+      <td class='text-right'><Currency number={transaction.debt.find(d => d.paidForId === user.authUid)?.amount} /></td>
       <td>
         <Time timestamp={parse(transaction.date, DATE_FORMAT, new Date())} />
       </td>
@@ -98,8 +101,8 @@
   <div class='break-after-page'></div>
   <Detail className='mt-2'>
     <DetailValue label='Description'>{transaction.description}</DetailValue>
-    <DetailValue label='Total Amount'>₹{transaction.amount}</DetailValue>
-    <DetailValue label='My Share'>₹{transaction.debt.find(d => d.paidForId === user.authUid)?.amount}</DetailValue>
+    <DetailValue label='Total Amount'><Currency number={transaction.amount} /></DetailValue>
+    <DetailValue label='My Share'><Currency number={transaction.debt.find(d => d.paidForId === user.authUid)?.amount} /></DetailValue>
     <DetailValue label='Date'>
       <Time timestamp={parse(transaction.date, DATE_FORMAT, new Date())} />
     </DetailValue>
