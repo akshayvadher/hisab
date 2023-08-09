@@ -20,7 +20,7 @@
   let showImage = false;
 </script>
 
-<li class='py-2 flex gap-2 items-center flex-wrap'>
+<li class='py-2 flex gap-2 items-center flex-wrap border-b dark:border-gray-600'>
   <div>{transaction.description}</div>
   <div><Currency number={transaction.amount} />
     Paid By
